@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MVI Load Refresh</string>
+
+    <string name="error_text">Ошибка</string>
+    <string name="loading_error_text">Ошибка загрузки</string>
+    <string name="refreshing_error_text">Ошибка обновления</string>
+    <string name="retry_text">Повторить загрузку</string>
+    <string name="sortByName">Сортировать по имени</string>
+</resources>
