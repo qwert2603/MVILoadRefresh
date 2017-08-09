@@ -12,13 +12,6 @@ import com.qwert2603.mvi_load_refresh.util.showIfNotYet
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.view_load_refresh.view.*
 
-interface LoadRefreshPanel {
-    fun retryClicks(): Observable<Any>
-    fun refreshes(): Observable<Any>
-
-    fun render(vs: LRViewState<*>)
-}
-
 /**
  * Implementation of [LoadRefreshPanel] that contains of:
  * - [android.widget.ViewAnimator] ([LR_ViewAnimator]) to switch between layers of:

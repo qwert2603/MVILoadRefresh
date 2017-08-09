@@ -8,7 +8,8 @@ import com.hannesdorfmann.mosby3.mvi.MviFragment
 import com.qwert2603.mvi_load_refresh.R
 import io.reactivex.Observable
 
-abstract class LRFragment<K, M : InitialModelHolder<*>, V : LRView<K, M>, P : MviBasePresenter<V, LRViewState<M>>> : MviFragment<V, P>(), LRView<K, M> {
+abstract class LRFragment<K, M : InitialModelHolder<*>, V : LRView<K, M>, P : MviBasePresenter<V, LRViewState<M>>>
+    : MviFragment<V, P>(), LRView<K, M> {
 
     protected abstract val key: K
 
@@ -28,6 +29,4 @@ abstract class LRFragment<K, M : InitialModelHolder<*>, V : LRView<K, M>, P : Mv
             Snackbar.make(viewForSnackbar(), R.string.refreshing_error_text, Snackbar.LENGTH_SHORT).show()
         }
     }
-
-
 }
