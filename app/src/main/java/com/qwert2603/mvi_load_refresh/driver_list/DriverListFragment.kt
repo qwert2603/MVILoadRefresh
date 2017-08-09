@@ -18,7 +18,7 @@ class DriverListFragment : LRFragment<Any, DriverListModel, DriverListView, Driv
 
     override fun createPresenter() = DriverListPresenter()
 
-    override fun key() = Any()
+    override val key = Any()
 
     override fun viewForSnackbar(): View = lr_panel
 

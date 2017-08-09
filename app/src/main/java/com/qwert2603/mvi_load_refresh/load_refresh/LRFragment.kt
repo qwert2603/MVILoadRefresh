@@ -10,16 +10,16 @@ import io.reactivex.Observable
 
 abstract class LRFragment<K, M : InitialModelHolder<*>, V : LRView<K, M>, P : MviBasePresenter<V, LRViewState<M>>> : MviFragment<V, P>(), LRView<K, M> {
 
-    protected abstract fun key(): K
+    protected abstract val key: K
 
     protected abstract fun viewForSnackbar(): View
     protected abstract fun loadRefreshPanel(): LoadRefreshPanel
 
-    override fun load(): Observable<K> = Observable.just(key())
+    override fun load(): Observable<K> = Observable.just(key)
 
-    override fun retry(): Observable<K> = loadRefreshPanel().retryClicks().map { key() }
+    override fun retry(): Observable<K> = loadRefreshPanel().retryClicks().map { key }
 
-    override fun refresh(): Observable<K> = loadRefreshPanel().refreshes().map { key() }
+    override fun refresh(): Observable<K> = loadRefreshPanel().refreshes().map { key }
 
     @CallSuper
     override fun render(vs: LRViewState<M>) {

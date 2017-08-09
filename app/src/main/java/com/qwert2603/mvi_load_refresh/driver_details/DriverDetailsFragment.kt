@@ -25,7 +25,7 @@ class DriverDetailsFragment : LRFragment<Long, DriverDetailsModel, DriverDetails
                 }
     }
 
-    override fun key(): Long = arguments.getLong(driverIdKey)
+    override val key by lazy { arguments.getLong(driverIdKey) }
 
     override fun viewForSnackbar(): View = root
 

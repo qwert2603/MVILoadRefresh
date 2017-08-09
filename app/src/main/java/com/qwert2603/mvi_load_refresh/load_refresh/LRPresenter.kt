@@ -6,9 +6,6 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 
-/**
- * Presenter that can load (retry load) and refresh initial model.
- */
 abstract class LRPresenter<K, I, M : InitialModelHolder<I>, V : LRView<K, M>> : MviBasePresenter<V, LRViewState<M>>() {
 
     protected abstract fun initialModelSingle(key: K): Single<I>
