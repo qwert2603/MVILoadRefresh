@@ -10,9 +10,9 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
 
-class DriverListPresenter : LRPresenter<Any, List<Driver>, DriverListModel, DriverListView>() {
+class DriverListPresenter : LRPresenter<List<Driver>, DriverListModel, DriverListView>() {
 
-    override fun initialModelSingle(key: Any): Single<List<Driver>> = Single.just(DriversSource.DRIVERS)
+    override fun initialModelSingle(): Single<List<Driver>> = Single.just(DriversSource.DRIVERS)
             .delay(1, TimeUnit.SECONDS)
             .flatMap { if (System.currentTimeMillis() % 2 == 0L) Single.just(it) else Single.error(Exception()) }
 

@@ -12,7 +12,7 @@ import com.qwert2603.mvi_load_refresh.load_refresh.LoadRefreshPanel
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_driver_details.*
 
-class DriverDetailsFragment : LRFragment<Long, DriverDetailsModel, DriverDetailsView, DriverDetailsPresenter>(), DriverDetailsView {
+class DriverDetailsFragment : LRFragment<DriverDetailsModel, DriverDetailsView, DriverDetailsPresenter>(), DriverDetailsView {
 
     companion object {
         private val driverIdKey = "driverId"
@@ -24,8 +24,6 @@ class DriverDetailsFragment : LRFragment<Long, DriverDetailsModel, DriverDetails
                     it.arguments = bundle
                 }
     }
-
-    override val key by lazy { arguments.getLong(driverIdKey) }
 
     override fun viewForSnackbar(): View = root
 
@@ -44,11 +42,10 @@ class DriverDetailsFragment : LRFragment<Long, DriverDetailsModel, DriverDetails
         }
     }
 
-    override fun createPresenter() = DriverDetailsPresenter()
+    override fun createPresenter() = DriverDetailsPresenter(arguments.getLong(driverIdKey))
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_driver_details, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
+            = inflater.inflate(R.layout.fragment_driver_details, container, false)
 
     override fun render(vs: LRViewState<DriverDetailsModel>) {
         super.render(vs)

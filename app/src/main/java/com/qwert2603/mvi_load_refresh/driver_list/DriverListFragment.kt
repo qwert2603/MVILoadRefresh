@@ -14,19 +14,16 @@ import com.qwert2603.mvi_load_refresh.load_refresh.LoadRefreshPanel
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_drivers_list.*
 
-class DriverListFragment : LRFragment<Any, DriverListModel, DriverListView, DriverListPresenter>(), DriverListView {
+class DriverListFragment : LRFragment<DriverListModel, DriverListView, DriverListPresenter>(), DriverListView {
 
     override fun createPresenter() = DriverListPresenter()
-
-    override val key = Any()
 
     override fun viewForSnackbar(): View = lr_panel
 
     override fun loadRefreshPanel(): LoadRefreshPanel = lr_panel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_drivers_list, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
+            = inflater.inflate(R.layout.fragment_drivers_list, container, false)
 
     private val driversAdapter = DriversAdapter()
 

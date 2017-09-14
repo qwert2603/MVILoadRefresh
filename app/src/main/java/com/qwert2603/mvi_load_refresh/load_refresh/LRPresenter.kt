@@ -1,33 +1,29 @@
 package com.qwert2603.mvi_load_refresh.load_refresh
 
 import android.support.annotation.CallSuper
+import android.util.Log
 import com.hannesdorfmann.mosby3.mvi.MviBasePresenter
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.functions.BiFunction
 
-abstract class LRPresenter<K, I, M, V : LRView<K, M>> : MviBasePresenter<V, LRViewState<M>>() {
+abstract class LRPresenter<I, M, V : LRView<M>> : MviBasePresenter<V, LRViewState<M>>() {
 
-    protected abstract fun initialModelSingle(key: K): Single<I>
+    protected abstract fun initialModelSingle(): Single<I>
 
     open protected val reloadIntent: Observable<Any> = Observable.never()
 
-    protected val loadIntent: Observable<K> = intent { it.load() }
-    protected val retryIntent: Observable<K> = intent { it.retry() }
-    protected val refreshIntent: Observable<K> = intent { it.refresh() }
+    protected val retryIntent: Observable<Any> = intent { it.retry() }
+    protected val refreshIntent: Observable<Any> = intent { it.refresh() }
 
     protected fun loadRefreshPartialChanges(): Observable<LRPartialChange> = Observable.merge(
             Observable
                     .merge(
-                            Observable.combineLatest(
-                                    loadIntent,
-                                    reloadIntent.startWith(Any()),
-                                    BiFunction { k, _ -> k }
-                            ),
+                            Observable.just(Any()),
+                            reloadIntent,
                             retryIntent
                     )
                     .switchMap {
-                        initialModelSingle(it)
+                        initialModelSingle()
                                 .toObservable()
                                 .map<LRPartialChange> { LRPartialChange.InitialModelLoaded(it) }
                                 .onErrorReturn { LRPartialChange.LoadingError(it) }
@@ -35,7 +31,7 @@ abstract class LRPresenter<K, I, M, V : LRView<K, M>> : MviBasePresenter<V, LRVi
                     },
             refreshIntent
                     .switchMap {
-                        initialModelSingle(it)
+                        initialModelSingle()
                                 .toObservable()
                                 .map<LRPartialChange> { LRPartialChange.InitialModelLoaded(it) }
                                 .onErrorReturn { LRPartialChange.RefreshError(it) }
@@ -47,6 +43,7 @@ abstract class LRPresenter<K, I, M, V : LRView<K, M>> : MviBasePresenter<V, LRVi
 
     @CallSuper
     open protected fun stateReducer(viewState: LRViewState<M>, change: PartialChange): LRViewState<M> {
+        Log.d("AASSDD", "LRPresenter stateReducer $change")
         if (change !is LRPartialChange) throw Exception()
         return when (change) {
             LRPartialChange.LoadingStarted -> viewState.copy(loading = true, loadingError = null, canRefresh = false)
