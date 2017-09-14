@@ -26,6 +26,8 @@ class DriverListPresenter : LRPresenter<Any, List<Driver>, DriverListModel, Driv
         subscribeViewState(observable.scan(initialViewState, this::stateReducer).observeOn(AndroidSchedulers.mainThread()), DriverListView::render)
     }
 
+    override fun DriverListModel.changeInitialModel(i: List<Driver>) = copy(drivers = i)
+
     override fun stateReducer(viewState: LRViewState<DriverListModel>, change: PartialChange): LRViewState<DriverListModel> {
         if (change !is DriverListPartialChanges) return super.stateReducer(viewState, change)
         return when (change) {

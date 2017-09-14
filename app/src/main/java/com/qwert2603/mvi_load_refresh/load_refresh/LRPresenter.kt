@@ -6,7 +6,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 
-abstract class LRPresenter<K, I, M : InitialModelHolder<I>, V : LRView<K, M>> : MviBasePresenter<V, LRViewState<M>>() {
+abstract class LRPresenter<K, I, M, V : LRView<K, M>> : MviBasePresenter<V, LRViewState<M>>() {
 
     protected abstract fun initialModelSingle(key: K): Single<I>
 
@@ -43,6 +43,8 @@ abstract class LRPresenter<K, I, M : InitialModelHolder<I>, V : LRView<K, M>> : 
                     }
     )
 
+    abstract protected fun M.changeInitialModel(i: I): M
+
     @CallSuper
     open protected fun stateReducer(viewState: LRViewState<M>, change: PartialChange): LRViewState<M> {
         if (change !is LRPartialChange) throw Exception()
@@ -56,7 +58,7 @@ abstract class LRPresenter<K, I, M : InitialModelHolder<I>, V : LRView<K, M>> : 
                 viewState.copy(
                         loading = false,
                         loadingError = null,
-                        model = viewState.model.changeInitialModel(change.i as I) as M,
+                        model = viewState.model.changeInitialModel(change.i as I),
                         canRefresh = true,
                         refreshing = false
                 )

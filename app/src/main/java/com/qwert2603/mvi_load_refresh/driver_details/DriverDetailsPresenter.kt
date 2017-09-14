@@ -15,6 +15,8 @@ class DriverDetailsPresenter : LRPresenter<Long, Driver, DriverDetailsModel, Dri
             .delay(1, TimeUnit.SECONDS)
             .flatMap { if (System.currentTimeMillis() % 2 == 0L) Single.just(it) else Single.error(Exception()) }
 
+    override fun DriverDetailsModel.changeInitialModel(i: Driver) = copy(driver = i)
+
     override fun bindIntents() {
         val observable = loadRefreshPartialChanges()
         val initialViewState = LRViewState(false, null, false, false, null, DriverDetailsModel(Driver(-1, "", "", -1)))
